@@ -195,11 +195,20 @@ export default {
       if (this.isSliding || slideIndex === this.currentSlide) {
         return;
       }
+      let wasCanceled;
 
+      const cancelFn = () => {
+        wasCanceled = true;
+      };
+      
       this.$emit('beforeSlide', {
         currentSlide: this.currentSlide,
         slideTo: index
-      });
+      }, cancelFn);
+
+      if(wasCanceled) {
+        return;
+      }
 
       const { infiniteScroll, transition } = this.config;
       const previousSlide = this.currentSlide;
